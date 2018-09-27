@@ -1,1 +1,1 @@
-module.exports = () => 'Hello bot-elneck-killer';
+module.exports = () => 'Hello Bot-elneck-killer';
