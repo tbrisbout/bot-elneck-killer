@@ -1,7 +1,8 @@
 const { send, json } = require("micro");
 const { getOr } = require("lodash/fp");
 
-const postMessage = require('./messaging.js');
+const postMessage = require("./messaging.js");
+//const { createWebHook } = require("./trello/business");
 
 const TYPE_CREATE_CARD = "createCard";
 const TYPE_UPDATE_CARD = "updateCard";
@@ -28,7 +29,7 @@ const actionSwitcher = data => {
 module.exports = async (req, res) => {
   const statusCode = 200;
   let data;
-  if (req.url.includes('favicon')) return '';
+  if (req.url.includes("favicon")) return "";
 
   try {
     data = await json(req);
@@ -40,10 +41,19 @@ module.exports = async (req, res) => {
 
   let token;
   try {
-    data = await postMessage('Hello BNPP CIB Team');
+    data = await postMessage("Hello BNPP CIB Team");
   } catch (err) {
     data = err;
   }
+
+  // Create webhook by passing callbackUrl (must be unique).
+  // try {
+  //   data = await createWebHook(
+  //     `https://bot-elneck-killer.now.sh?version=${Date.now()}`
+  //   );
+  // } catch (err) {
+  //   data = err;
+  // }
 
   console.log("-----> Debug data", data);
 
