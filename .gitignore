@@ -1,6 +1,6 @@
 # Certificates
 *.p12
-
+*.pem
 
 # Logs
 logs
