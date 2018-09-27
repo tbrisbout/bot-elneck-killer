@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "micro": "^9.3.3",
+    "node-nlp": "^2.0.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }
