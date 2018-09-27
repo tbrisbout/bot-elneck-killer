@@ -2,7 +2,7 @@ const { send, json } = require("micro");
 const { getOr } = require("lodash/fp");
 
 const postMessage = require("./messaging.js");
-//const { createWebHook } = require("./trello/business");
+const { createWebHook, moveCardInList } = require("./trello/business");
 
 const TYPE_CREATE_CARD = "createCard";
 const TYPE_UPDATE_CARD = "updateCard";
@@ -11,13 +11,22 @@ const sendNotification = (message, data = {}) => {
   console.log(`Send Notification ----> ${message}`, data);
 };
 
-const actionSwitcher = data => {
+const actionSwitcher = async data => {
   const action = getOr({}, "action", data);
   const type = getOr("", "type", action);
 
   switch (type) {
     case TYPE_CREATE_CARD:
       sendNotification("Add new card", action);
+
+      const cardId = getOr("", "data.card.id", action);
+      const idList = "5bab4dcc2d79f9723ef248fc";
+      try {
+        const data = await moveCardInList(cardId, idList);
+        console.log("DEBUG moveCardAfterDelay res ", data);
+      } catch (err) {
+        console.log(err);
+      }
       break;
     case TYPE_UPDATE_CARD:
       sendNotification("Update a card", action);

@@ -17,4 +17,10 @@ const createWebHook = (callbackURL, idModel = defaultBoardId) => {
   });
 };
 
-module.exports = { createWebHook };
+const moveCardInList = (cardId, listId) => {
+  return trelloClient.put({
+    uri: `1/cards/${cardId}/idList?value=${listId}&key=${key}&token=${token}`
+  });
+};
+
+module.exports = { createWebHook, moveCardInList };
