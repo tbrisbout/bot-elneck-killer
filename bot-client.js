@@ -13,12 +13,16 @@ const CONFIG = {
 
 const baseClient = rp.defaults(CONFIG);
 
+const keyAuthClient = baseClient.defaults({
+  uri: process.env.KEY_AUTH_URL || 'https://develop2-api.symphony.com/keyauth/v1/authenticate'
+})
+
 const botAuthClient = baseClient.defaults({
   uri: process.env.AUTH_URL || 'https://develop2-api.symphony.com/sessionauth/v1/authenticate'
 });
 
-const botClient = baseClient.defaults({
+const botClient = rp.defaults({
   baseUrl: process.env.POD_URL || 'https://develop2.symphony.com'
 });
 
-module.exports = { botAuthClient, botClient };
+module.exports = { keyAuthClient, botAuthClient, botClient };

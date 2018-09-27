@@ -1,7 +1,7 @@
 const { send, json } = require("micro");
 const { getOr } = require("lodash/fp");
 
-const { botAuthClient, botClient } = require("./bot-client");
+const postMessage = require('./messaging.js');
 
 const TYPE_CREATE_CARD = "createCard";
 const TYPE_UPDATE_CARD = "updateCard";
@@ -28,6 +28,7 @@ const actionSwitcher = data => {
 module.exports = async (req, res) => {
   const statusCode = 200;
   let data;
+  if (req.url.includes('favicon')) return '';
 
   try {
     data = await json(req);
@@ -39,7 +40,7 @@ module.exports = async (req, res) => {
 
   let token;
   try {
-    data = token = await botAuthClient.post();
+    data = await postMessage('Hello BNPP CIB Team');
   } catch (err) {
     data = err;
   }
