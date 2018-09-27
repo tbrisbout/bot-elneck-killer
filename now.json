@@ -1,8 +1,10 @@
 {
-  "env":{
+  "env": {
     "BOT_CERTIFICATE": "@bot-certificate",
     "BOT_KEY": "@bot-key",
     "BOT_PASSWORD": "@bot-password",
-    "TOKEN_NOW": "@token-now"
+    "TOKEN_NOW": "@token-now",
+    "TRELLO_API_KEY": "@trello-api-key",
+    "TRELLO_API_TOKEN": "@trello-api-token"
   }
 }
