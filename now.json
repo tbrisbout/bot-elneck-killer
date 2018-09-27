@@ -2,6 +2,7 @@
   "env":{
     "BOT_CERTIFICATE": "@bot-certificate",
     "BOT_KEY": "@bot-key",
-    "BOT_PASSWORD": "@bot-password"
+    "BOT_PASSWORD": "@bot-password",
+    "TOKEN_NOW": "@token-now"
   }
 }
