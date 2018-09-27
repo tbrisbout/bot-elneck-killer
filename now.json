@@ -1,1 +1,7 @@
-{}
+{
+  "env":{
+    "BOT_CERTIFICATE": "@bot-certificate",
+    "BOT_KEY": "@bot-key",
+    "BOT_PASSWORD": "@bot-password"
+  }
+}
