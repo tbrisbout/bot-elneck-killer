@@ -1,4 +1,5 @@
 {
+  "alias": "bot-elneck-killer.now.sh",
   "env": {
     "BOT_CERTIFICATE": "@bot-certificate",
     "BOT_KEY": "@bot-key",
