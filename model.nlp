@@ -1,0 +1,149 @@
+{
+  "settings": {
+    "languages": [
+      "en"
+    ],
+    "fullSearchWhenGuessed": true,
+    "useNlg": true
+  },
+  "languages": [
+    "en"
+  ],
+  "intentDomains": {
+    "now.deploy": "default"
+  },
+  "nerManager": {
+    "settings": {},
+    "threshold": 0.8,
+    "builtins": [
+      "Number",
+      "Ordinal",
+      "Percentage",
+      "Age",
+      "Currency",
+      "Dimension",
+      "Temperature",
+      "DateTime",
+      "PhoneNumber",
+      "IpAddress",
+      "Boolean",
+      "Email",
+      "Hashtag",
+      "URL"
+    ],
+    "namedEntities": {}
+  },
+  "slotManager": {},
+  "classifiers": [
+    {
+      "language": "en",
+      "docs": [
+        {
+          "intent": "now.deploy",
+          "utterance": [
+            "can",
+            "you",
+            "deploi"
+          ]
+        },
+        {
+          "intent": "now.deploy",
+          "utterance": [
+            "can",
+            "you",
+            "deploi",
+            "the",
+            "applic"
+          ]
+        },
+        {
+          "intent": "now.deploy",
+          "utterance": [
+            "could",
+            "you",
+            "deploi",
+            "the",
+            "applic"
+          ]
+        },
+        {
+          "intent": "now.deploy",
+          "utterance": [
+            "could",
+            "you",
+            "deploi",
+            "the",
+            "applic",
+            "pleas"
+          ]
+        }
+      ],
+      "features": {
+        "can": 2,
+        "you": 4,
+        "deploi": 4,
+        "the": 3,
+        "applic": 3,
+        "could": 2,
+        "pleas": 1
+      },
+      "logistic": {
+        "observations": {
+          "now.deploy": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          ]
+        },
+        "labels": [
+          "now.deploy"
+        ],
+        "observationCount": 4,
+        "theta": [
+          {
+            "elements": [
+              0.7585755814833016,
+              1.509962162008127,
+              1.509962162008127,
+              1.127206875731583,
+              1.127206875731583,
+              0.7513865805248254,
+              0.3755648106679903
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "responses": {
+    "en": {
+      "now.deploy": [
+        {
+          "response": "Understood, I'm deploying now"
+        }
+      ]
+    }
+  }
+}
