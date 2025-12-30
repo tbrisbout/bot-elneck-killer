@@ -1,7 +1,7 @@
 const { send, json } = require("micro");
 const { getOr } = require("lodash/fp");
 
-const postMessage = require("./messaging.js");
+const { init, pollMessage, sendMessage } = require('./messaging.js');
 const { createWebHook, moveCardInList } = require("./trello/business");
 
 const TYPE_CREATE_CARD = "createCard";
@@ -9,6 +9,7 @@ const TYPE_UPDATE_CARD = "updateCard";
 
 const sendNotification = (message, data = {}) => {
   console.log(`Send Notification ----> ${message}`, data);
+  sendMessage(message + ' ' + getOr('', 'card.name', data));
 };
 
 const actionSwitcher = async data => {
@@ -48,13 +49,6 @@ module.exports = async (req, res) => {
     data = "This is a trello webhook.";
   }
 
-  let token;
-  try {
-    data = await postMessage("Hello BNPP CIB Team");
-  } catch (err) {
-    data = err;
-  }
-
   // Create webhook by passing callbackUrl (must be unique).
   // try {
   //   data = await createWebHook(
@@ -68,3 +62,6 @@ module.exports = async (req, res) => {
 
   send(res, statusCode, data);
 };
+
+init('Hello BNPP CIB Team, I am ready to help you with your workflow!');
+pollMessage();

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const {NlpManager} = require('node-nlp')
+const { deploy } = require('./nowClient');
 
 const LANGUAGE = 'en'
 const TAGS = {
@@ -21,47 +22,48 @@ const trainNlp = manager => {
   //   return
   // }
   // deployment
-  manager.AddDocument('en', 'Deploy', TAGS.NOW.DEPLOY)
-  manager.AddDocument('en', 'Deploy this branch', TAGS.NOW.DEPLOY)
-  manager.AddDocument('en', 'Deploy in production', TAGS.NOW.DEPLOY)
-  manager.AddDocument('en', 'I want to deploy', TAGS.NOW.DEPLOY)
-  manager.AddDocument('en', 'New deployment', TAGS.NOW.DEPLOY)
-  manager.AddDocument('en', 'push this feature', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'Deploy', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'Deploy this branch', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'Deploy in production', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'I want to deploy', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'New deployment', TAGS.NOW.DEPLOY)
+  manager.addDocument('en', 'push this feature', TAGS.NOW.DEPLOY)
   // Ticket Assignation
-  manager.AddDocument('en', 'assign me on the ticket', TAGS.TRELLO.ASSIGN)
-  manager.AddDocument('en', 'I take the ticket', TAGS.TRELLO.ASSIGN)
-  manager.AddDocument('en', 'I took the ticket', TAGS.TRELLO.ASSIGN)
+  manager.addDocument('en', 'assign me on the ticket', TAGS.TRELLO.ASSIGN)
+  manager.addDocument('en', 'I take the ticket', TAGS.TRELLO.ASSIGN)
+  manager.addDocument('en', 'I took the ticket', TAGS.TRELLO.ASSIGN)
   // Ticket validation
-  manager.AddDocument('en', 'I valid ticket', TAGS.TRELLO.VALIDATE)
-  manager.AddDocument('en', 'I confirm ticket', TAGS.TRELLO.VALIDATE)
+  manager.addDocument('en', 'I valid ticket', TAGS.TRELLO.VALIDATE)
+  manager.addDocument('en', 'I confirm ticket', TAGS.TRELLO.VALIDATE)
   // Move ticket
-  manager.AddDocument('en', 'move ticket', TAGS.TRELLO.MOVE)
+  manager.addDocument('en', 'move ticket', TAGS.TRELLO.MOVE)
   // Ticket information
-  manager.AddDocument('en', 'show me the ticket', TAGS.TRELLO.INFO)
-  manager.AddDocument('en', 'detail ticket', TAGS.TRELLO.INFO)
-  manager.AddDocument('en', 'read ticket', TAGS.TRELLO.INFO)
-  manager.AddDocument('en', 'info ticket', TAGS.TRELLO.INFO)
+  manager.addDocument('en', 'show me the ticket', TAGS.TRELLO.INFO)
+  manager.addDocument('en', 'detail ticket', TAGS.TRELLO.INFO)
+  manager.addDocument('en', 'read ticket', TAGS.TRELLO.INFO)
+  manager.addDocument('en', 'info ticket', TAGS.TRELLO.INFO)
   // Ticket position
-  manager.AddDocument('en', 'status ticket', TAGS.TRELLO.STATUS)
+  manager.addDocument('en', 'status ticket', TAGS.TRELLO.STATUS)
 
-  manager.AddAnswer('en', TAGS.NOW.DEPLOY, 'I got it')
-  manager.AddAnswer('en', TAGS.NOW.DEPLOY, 'Copy that')
-  manager.AddAnswer('en', TAGS.NOW.DEPLOY, 'There is the temporary URL')
+  manager.addAnswer('en', TAGS.NOW.DEPLOY, 'I got it')
+  manager.addAnswer('en', TAGS.NOW.DEPLOY, 'Copy that')
+  manager.addAnswer('en', TAGS.NOW.DEPLOY, 'Here you go')
 
-  manager.AddAnswer('en', TAGS.TRELLO.ASSIGN, `It's ok, you are in charge now`)
-  manager.AddAnswer('en', TAGS.TRELLO.VALIDATE, 'I deploy that in production')
-  manager.AddAnswer('en', TAGS.TRELLO.MOVE, 'Ticket moved with success')
-  manager.AddAnswer('en', TAGS.TRELLO.INFOS, 'See detail here')
-  manager.AddAnswer('en', TAGS.TRELLO.STATUS, 'See the status here')
+  manager.addAnswer('en', TAGS.TRELLO.ASSIGN, `It's ok, you are in charge now`)
+  manager.addAnswer('en', TAGS.TRELLO.VALIDATE, 'I deploy that in production')
+  manager.addAnswer('en', TAGS.TRELLO.MOVE, 'Ticket moved with success')
+  manager.addAnswer('en', TAGS.TRELLO.INFOS, 'See detail here')
+  manager.addAnswer('en', TAGS.TRELLO.STATUS, 'See the status here')
 
   manager.train()
-  manager.save('./model.nlp')
+  manager.save()
 }
 
-const getIntent = async (input, options) => {
-  const manager = new NlpManager({languages: [LANGUAGE]})
-  trainNlp(manager)
 
+const manager = new NlpManager({languages: [LANGUAGE]})
+trainNlp(manager)
+
+const getIntent = async (input, options) => {
   try {
     const result = await manager.process(input)
 
@@ -69,27 +71,28 @@ const getIntent = async (input, options) => {
       case TAGS.NOW.DEPLOY:
         // call deploy api and make bot say the answer
         console.log(result.answer)
-        return
+        const data = await deploy();
+        return { text: result.answer, link: 'https://' + (data || {}).url };
       case TAGS.TRELLO.ASSIGN:
         // call Trello api and make bot say the answer
         console.log(result.answer)
-        return
+        return result.answer;
       case TAGS.TRELLO.VALIDATE:
         // call Trello api and make bot say the answer
         console.log(result.answer)
-        return
+        return result.answer;
       case TAGS.TRELLO.MOVE:
         // call Trello api and make bot say the answer
         console.log(result.answer)
-        return
+        return result.answer;
       case TAGS.TRELLO.INFOS:
         // call Trello api and make bot say the answer
         console.log(result.answer)
-        return
+        return result.answer;
       case TAGS.TRELLO.STATUS:
         // call Trello api and make bot say the answer
         console.log(result.answer)
-        return
+        return result.answer;
     }
   } catch (error) {
     // make it learn \o/
